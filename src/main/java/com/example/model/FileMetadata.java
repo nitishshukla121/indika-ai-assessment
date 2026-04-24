@@ -16,13 +16,17 @@ public class FileMetadata {
     private Long id;
 
     private String fileName;
-    
-    private String fileType; 
-    
+    private String fileType;
     private Long fileSize;
 
     @Column(columnDefinition = "TEXT")
-    private String summary; 
+    private String summary;
+
+    @Column(columnDefinition = "TEXT")
+    private String transcription;
+
+    @Column(columnDefinition = "TEXT")
+    private String segmentsJson;
 
     private LocalDateTime uploadDate;
 
