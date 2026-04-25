@@ -1,87 +1,34 @@
-Indika AI Intelligence Hub
-A production-grade, full-stack RAG (Retrieval-Augmented Generation) application designed to process and analyze diverse media types, including PDFs, audio, and video files. The platform provides intelligent insights, automated summaries, and context-aware chat capabilities with precise timestamp references for multimedia content.
+# 🚀 Indika AI - SDE-1 Programming Assignment
 
-🚀 Key Features
-Multimedia Ingestion: Processes PDFs using Apache Tika and media files via OpenAI Whisper.
+[cite_start]A full-stack AI-Powered Document & Multimedia Q&A Web Application built to fulfill the Indika AI SDE-1 assignment requirements[cite: 39, 40].
 
-Speech-to-Text with Timestamps: Deep integration with Whisper-1 to extract transcriptions and segment-level timestamps for audio/video.
+## 🎯 Objective Fulfillment
+This application successfully implements all core requirements:
+* [cite_start]**Multi-format Upload:** Supports uploading PDF documents, audio, and video files[cite: 43].
+* [cite_start]**AI Chatbot:** Context-aware Q&A against the uploaded files using an LLM-powered RAG pipeline[cite: 44].
+* [cite_start]**Auto-Summarization:** Instantly generates summaries for uploaded content[cite: 45].
+* [cite_start]**Media Timestamps & Play Button:** Extracts timestamps from media files and provides a "Play" button in the chat to jump to the exact relevant portion of the video/audio[cite: 46, 63, 64].
 
-Intelligent RAG Pipeline: Uses OpenAI embeddings and Pinecone vector storage to retrieve relevant context for user queries.
+## 🛠️ Technology Stack
+* [cite_start]**Backend:** Java 17, Spring Boot 3.4.1 [cite: 50]
+* [cite_start]**Frontend:** React.js, Vite, pure CSS [cite: 59]
+* [cite_start]**AI & LLM Integration:** Spring AI, Ollama (`llama3.2:1b` & `nomic-embed-text`) [cite: 51]
+* [cite_start]**Database & Vector Search:** In-Memory H2 (Metadata & Vector Store for semantic search) [cite: 54, 69]
+* [cite_start]**Infrastructure:** Docker, Docker Compose, GitHub Actions (CI/CD) [cite: 56, 57, 66]
 
-Auto-Summarization: Instant generation of concise document summaries powered by LLMs.
+## 🏗️ Architecture & Design Decisions
+* [cite_start]**Local LLM vs Cloud APIs:** While the assignment suggested OpenAI/Whisper[cite: 51, 52], this solution implements a **100% Local AI Pipeline** using Ollama. This architectural choice eliminates API costs, ensures zero data-leakage (privacy-first), and demonstrates the ability to optimize heavy LLM workloads on constrained local hardware environments.
+* [cite_start]**Vector Search:** Implemented using Spring AI's SimpleVectorStore, mapping chunks and embeddings for fast semantic retrieval[cite: 69].
 
-High-Performance Caching: Redis-backed caching for chat responses and summaries to minimize latency and API costs.
+## ⚙️ Setup & Running Instructions
 
-Enterprise Grade Testing: 95%+ backend code coverage verified via JaCoCo and automated CI/CD pipelines.
+### 1. Prerequisites
+* Java 17 & Maven
+* Node.js & npm
+* [cite_start]Docker & Docker Compose [cite: 66]
+* Ollama (with `llama3.2:1b` and `nomic-embed-text` pulled locally)
 
-🛠️ Tech Stack
-Backend: Java 17, Spring Boot 3.4.1, Spring AI.
-
-Frontend: React, Tailwind CSS, Vite.
-
-Databases: PostgreSQL (Metadata), Redis (Cache), Pinecone (Vector Store).
-
-AI Models: OpenAI GPT-3.5 Turbo, Whisper-1, and text-embedding-ada-002.
-
-📋 Prerequisites
-Docker and Docker Compose
-
-Java 17 (JDK)
-
-Node.js & npm
-
-OpenAI API Key
-
-Pinecone API Credentials
-
-⚙️ Setup & Installation
-1. Configure Environment
-Ensure the following variables are available in your environment or application.properties:
-
-OPENAI_API_KEY
-
-PINECONE_API_KEY
-
-PINECONE_ENV
-
-PINECONE_PROJECT_ID
-
-2. Launch Infrastructure
-Boot up the required database and caching containers:
-
-Bash
-docker-compose up -d
-3. Start Backend Server
-Run the Spring Boot application from the root directory:
-
-Bash
-./mvnw spring-boot:run
-The server will be available at http://localhost:8080.
-
-4. Start Frontend UI
-Navigate to the frontend directory and launch the development server:
-
-Bash
-cd frontend
-npm install
-npm run dev
-The UI will be accessible at http://localhost:5173.
-
-🧪 Testing & CI/CD
-The project utilizes a robust testing strategy with Mockito and JUnit 5.
-A GitHub Actions workflow is configured to automatically build the project, run tests, and generate JaCoCo coverage reports on every push.
-
-To run tests locally:
-
-Bash
-./mvnw test jacoco:report
-🏗️ Architecture
-The system follows a standard RAG pattern:
-
-Ingestion: Files are cleaned and transcribed into raw text.
-
-Indexing: Text is split into chunks, embedded, and stored in Pinecone.
-
-Retrieval: Similarity search finds the most relevant document fragments for a user's question.
-
-Augmentation: Context is passed to GPT-3.5 Turbo with a custom system prompt to generate a grounded response.
+### 2. Run via Docker Compose (Recommended)
+[cite_start]A `docker-compose.yml` is provided to spin up the application seamlessly[cite: 66].
+```bash
+docker-compose up --build -d
