@@ -32,3 +32,6 @@ This application successfully implements all core requirements:
 [cite_start]A `docker-compose.yml` is provided to spin up the application seamlessly[cite: 66].
 ```bash
 docker-compose up --build -d
+
+## 🎥 Live Demo
+Watch the full walkthrough video here: [Live Walkthrough Video](https://1drv.ms/v/c/9b6baeebbb28a7e1/IQCq9HoDVis2RrfiNmjUT8mhASQssUOppv6kCP5rveo2exo?e=4S8Ozc)
