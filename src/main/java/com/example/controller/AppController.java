@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import com.example.model.ChatResponse;
 import com.example.model.FileMetadata;
 import com.example.repository.FileMetadataRepository;
 import com.example.service.ChatService;
@@ -9,14 +8,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.example.model.ChatResponse;
+
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
 public class AppController {
 
     private final IngestionService ingestionService;
@@ -44,7 +45,6 @@ public class AppController {
             response.put("fileName", metadata.getFileName());
             response.put("fileType", metadata.getFileType());
             response.put("fileSize", metadata.getFileSize());
-            response.put("uploadDate", metadata.getUploadDate());
             response.put("hasTranscription", metadata.getTranscription() != null);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -68,13 +68,10 @@ public class AppController {
         return ResponseEntity.ok(Map.of("message", "File deleted"));
     }
 
-    // Ask a question (RAG)
     @PostMapping("/chat")
     public ResponseEntity<ChatResponse> chat(@RequestBody Map<String, String> request) {
         String question = request.get("question");
-        if (question == null || question.isBlank()) {
-            return ResponseEntity.badRequest().build();
-        }
+        System.out.println("DEBUG: Received question -> " + question); // 👈 Ye line dalo
         ChatResponse response = chatService.askQuestion(question);
         return ResponseEntity.ok(response);
     }

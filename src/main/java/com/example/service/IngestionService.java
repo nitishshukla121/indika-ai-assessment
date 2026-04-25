@@ -10,10 +10,8 @@ import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -34,11 +32,12 @@ public class IngestionService {
         this.objectMapper = objectMapper;
     }
 
-    public FileMetadata processAndStoreFile(MultipartFile file) throws IOException {
+    public FileMetadata processAndStoreFile(MultipartFile file) throws Exception {
         FileMetadata metadata = new FileMetadata();
         metadata.setFileName(file.getOriginalFilename());
         metadata.setFileType(file.getContentType());
         metadata.setFileSize(file.getSize());
+        // uploadDate removed
 
         File tempFile = File.createTempFile("upload-", file.getOriginalFilename());
         try (FileOutputStream fos = new FileOutputStream(tempFile)) {
@@ -72,11 +71,5 @@ public class IngestionService {
         }
 
         return metadata;
-    }
-
-    public void ingestText(String text, String sourceId) {
-        TokenTextSplitter splitter = new TokenTextSplitter();
-        List<Document> chunks = splitter.apply(List.of(new Document(text)));
-        vectorStore.accept(chunks);
     }
 }

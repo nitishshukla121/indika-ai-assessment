@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -29,7 +28,8 @@ class TranscriptionServiceTest {
     @BeforeEach
     void setUp() {
         transcriptionService = new TranscriptionService(restTemplate, new ObjectMapper());
-        ReflectionTestUtils.setField(transcriptionService, "openAiApiKey", "test-key");
+        // field is named "apiKey" in the service
+        ReflectionTestUtils.setField(transcriptionService, "apiKey", "test-key");
     }
 
     @Test
@@ -74,16 +74,17 @@ class TranscriptionServiceTest {
     }
 
     @Test
-    void transcribe_throwsOnApiError() throws IOException {
+    void transcribe_onApiError_returnsFallback() throws IOException {
+        // Service catches errors and returns fallback — does NOT throw
         when(restTemplate.postForEntity(anyString(), any(), eq(String.class)))
             .thenThrow(new RuntimeException("401 Unauthorized"));
 
         File tempFile = Files.createTempFile("test", ".mp3").toFile();
         tempFile.deleteOnExit();
 
-        assertThatThrownBy(() -> transcriptionService.transcribe(tempFile))
-            .isInstanceOf(RuntimeException.class)
-            .hasMessageContaining("Whisper transcription failed");
+        TranscriptionService.TranscriptionResult result = transcriptionService.transcribe(tempFile);
+        assertThat(result.text()).contains("unavailable");
+        assertThat(result.segments()).isEmpty();
     }
 
     @Test

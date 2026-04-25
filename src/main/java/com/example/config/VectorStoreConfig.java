@@ -1,9 +1,17 @@
 package com.example.config;
 
+import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.ai.vectorstore.SimpleVectorStore;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-// Pinecone is fully auto-configured via application.properties in RC1
-// PineconeVectorStoreConfig builder was removed in RC1
 @Configuration
 public class VectorStoreConfig {
+
+	@Bean
+	public VectorStore vectorStore(EmbeddingModel embeddingModel) {
+	    return SimpleVectorStore.builder(embeddingModel).build();
+	}
 }
